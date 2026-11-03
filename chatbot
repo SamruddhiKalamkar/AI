@@ -1,0 +1,51 @@
+rules = [
+    (["hi", "hello", "hey", "greetings"], "Hello! How can I help you today?"),
+    (["how are you", "hows it going"], "I am doing well, thank you!"),
+    (["what is your name", "who are you"], "I am RuleBot, a simple rule-based chatbot."),
+    (["what can you do", "help"], "I can respond to basic questions using keyword matching!"),
+    (["bye", "goodbye", "exit", "quit"], "Goodbye! Have a great day!")
+]
+
+fallback_response = "I am not sure I understand. Try asking something else or type 'help'."
+
+def clean_text(text):
+    cleaned = ""
+    for char in text.lower():
+        if char in "abcdefghijklmnopqrstuvwxyz0123456789 ":
+            cleaned += char
+    return cleaned
+
+
+def get_response(user_input):
+    cleaned_input = clean_text(user_input)
+    words = cleaned_input.split()
+
+    for keywords, response in rules:
+        for keyword in keywords:
+            if " " in keyword:
+                if keyword in cleaned_input:
+                    return response
+            else:
+                if keyword in words:
+                    return response
+
+    return fallback_response
+
+
+print("=" * 45)
+print("RuleBot: Hello! Type 'exit' or 'bye' to quit.")
+print("=" * 45)
+
+while True:
+    user_input = input("You: ")
+
+    if not user_input.strip():
+        continue
+
+    response = get_response(user_input)
+    print("RuleBot:", response)
+    print()
+
+    cleaned = clean_text(user_input).split()
+    if "bye" in cleaned or "goodbye" in cleaned or "exit" in cleaned or "quit" in cleaned:
+        break
