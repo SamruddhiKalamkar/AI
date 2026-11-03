@@ -1,0 +1,39 @@
+def dfs(state, goal, visited):
+    if state == goal:
+        return [state]
+
+    for i in range(3):
+        if state[i]:
+            disk = state[i][-1]
+
+            for j in range(3):
+                if i != j and (not state[j] or state[j][-1] > disk):
+                    new_state = [list(p) for p in state]
+                    new_state[i].pop()
+                    new_state[j].append(disk)
+
+                    new_state = tuple(tuple(p) for p in new_state)
+
+                    if new_state not in visited:
+                        visited.add(new_state)
+                        result = dfs(new_state, goal, visited)
+
+                        if result:
+                            return [state] + result
+
+    return None
+
+
+n = int(input("Enter number of disks: "))
+
+initial = (tuple(range(n, 0, -1)), (), ())
+goal = ((), (), tuple(range(n, 0, -1)))
+
+visited = {initial}
+path = dfs(initial, goal, visited)
+
+print("State Transitions:")
+for state in path:
+    print(state)
+
+print("Goal Reached!")
