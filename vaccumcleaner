@@ -1,0 +1,35 @@
+environment = {
+    'A': 'Dirty',
+    'B': 'Dirty'
+}
+
+location = 'A'
+
+def simple_reflex_agent(location, status):
+    if status == "Dirty":
+        return "Suck"
+    elif location == "A":
+        return "Right"
+    else:
+        return "Left"
+
+while True:
+    print("\nCurrent Location:", location)
+    print("Room Status:", environment)
+
+    action = simple_reflex_agent(location, environment[location])
+    print("Action:", action)
+
+    if action == "Suck":
+        environment[location] = "Clean"
+
+        if environment["A"] == "Clean" and environment["B"] == "Clean":
+            print("\nFinal Room Status:", environment)
+            print("Both rooms are clean.")
+            break
+
+    elif action == "Right":
+        location = "B"
+
+    elif action == "Left":
+        location = "A"
