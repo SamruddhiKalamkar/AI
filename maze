@@ -1,0 +1,48 @@
+maze = [
+    [0, 0, 1, 0],
+    [0, 1, 0, 1],
+    [0, 0, 0, 1],
+    [1, 0, 0, 0]
+]
+
+start = (0, 0)
+goal = (3, 3)
+
+visited = set()
+path = []
+
+def dfs(row, col):
+    # Check boundaries, walls and visited cells
+    if (row < 0 or row >= len(maze) or
+        col < 0 or col >= len(maze[0]) or
+        maze[row][col] == 1 or
+        (row, col) in visited):
+        return False
+
+    # Mark current cell as visited
+    visited.add((row, col))
+
+    # Add current cell to path
+    path.append((row, col))
+
+    # Check if goal is reached
+    if (row, col) == goal:
+        return True
+
+    # Explore neighbouring cells: Down, Right, Up, Left
+    directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+
+    for dr, dc in directions:
+        if dfs(row + dr, col + dc):
+            return True
+
+    # Backtracking
+    path.pop()
+    return False
+
+
+if dfs(start[0], start[1]):
+    print("Path found:")
+    print(path)
+else:
+    print("No path found")
